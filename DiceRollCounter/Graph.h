@@ -25,8 +25,11 @@ public:
 	const float MaxBarHeightRatio = 0.9; // Maximum ratio of the window height that a bar can reach
 	sf::RectangleShape background;
 
+	sf::Text totalRollsLabel;
+
 	void Draw();
 	void DrawBars();
+	void DrawTotalRollsLabel();
 
 	void addPoint(int index);
 

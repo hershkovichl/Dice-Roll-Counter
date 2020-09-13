@@ -3,13 +3,14 @@
 #include "Graph.h" // Class to deal with the histogram
 #include "Console.h" // Namespace for all my console-based functions
 #include "Random.h"
+#include "GUI.h"
 
 using namespace std;
 
 void SetConfigurations(vector<string> settings);
 void Display(vector<int>& data); // This function handles the Graph Window
 int AddRandomD20();
-
+void findClosestSquare(int sides);
 
 struct Settings {
 	static bool debugMode; // in debug mode: left click on histogram to add 1 random roll, right click to add 300. ONLY works on d20
@@ -18,6 +19,7 @@ bool Settings::debugMode = false;
 
 int main() {
 	SetConfigurations(Console::readConfigurations());
+
 
 	// Initial instructions:
 	cout << "To input: \"Roll d[dice max] [result]\" \t or \"multi d[dice max]\"" << endl;
@@ -126,4 +128,16 @@ int AddRandomD20(){
 
 	Console::Roll(rand);
 	return randomInt;
+}
+
+
+void findClosestSquare(int sides) {
+	int large;
+	for (int small = sqrt(sides); small < sides; small++) 
+		if (sides % small == 0) {
+			large = sides / small;
+			break;
+		}
+			
+
 }

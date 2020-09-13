@@ -156,11 +156,13 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DiceCounter.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Random.h" />
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@ sf::Font Graph::font;
 void Graph::Draw() {
     window.draw(background);
     DrawBars();
+    DrawTotalRollsLabel();
 }
 
 void Graph::DrawBars() {
@@ -27,6 +28,21 @@ void Graph::DrawBars() {
         }
 
     }
+}
+
+void Graph::DrawTotalRollsLabel() {
+    totalRollsLabel.setFont(font);
+
+    int totalRolls = 0;
+    for (int i = 0; i < data->size(); i++)
+        totalRolls += data->at(i);
+
+    totalRollsLabel.setString("Total Rolls: " + to_string(totalRolls));
+    totalRollsLabel.setFillColor(sf::Color::Black);
+    totalRollsLabel.setCharacterSize(26);
+    totalRollsLabel.setStyle(sf::Text::Bold);
+
+    window.draw(totalRollsLabel);
 }
 
 void Graph::addPoint(int value){
