@@ -1,22 +1,27 @@
 #pragma once
+#include "Menu.h"
+
 
 class GUI
 {
 	sf::RenderWindow& window;
 	sf::RectangleShape background;
+
 	static sf::Font font;
 
-	struct Button : public sf::RectangleShape {
-		std::string label;
+	Home homeMenu;
+	RollMenu rollMenu;
 
-	};
+	Menu* CurrentMenu;
+	
+	
 
-	struct RollButton : public GUI::Button {
-		int value;
-
-	};
 
 public:
+
+	void SelectMenu(std::string menu);
+	void Draw();
+	void leftClick(sf::Vector2i& position);
 
 	GUI(sf::RenderWindow& window);
 };

@@ -4,6 +4,7 @@
 #include "Console.h" // Namespace for all my console-based functions
 #include "Random.h"
 #include "GUI.h"
+#include "Menu.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ void SetConfigurations(vector<string> settings);
 void Display(vector<int>& data); // This function handles the Graph Window
 int AddRandomD20();
 void findClosestSquare(int sides);
+void RunConsoleGUI();
 
 struct Settings {
 	static bool debugMode; // in debug mode: left click on histogram to add 1 random roll, right click to add 300. ONLY works on d20
@@ -19,7 +21,8 @@ bool Settings::debugMode = false;
 
 int main() {
 	SetConfigurations(Console::readConfigurations());
-
+	
+	RunConsoleGUI();
 
 	// Initial instructions:
 	cout << "To input: \"Roll d[dice max] [result]\" \t or \"multi d[dice max]\"" << endl;
@@ -68,6 +71,32 @@ void SetConfigurations(vector<string> settings) {
 		Settings::debugMode = false;
 }
 
+void RunConsoleGUI() {
+	cout << "\nRunning Interactive Controls..." << endl;
+	cout << "\tTo proceed in console, close interactive window" << endl;
+	sf::RenderWindow guiWindow(sf::VideoMode(1280, 720), "Consle GUI");
+	GUI GUI(guiWindow);
+
+	while (guiWindow.isOpen()) {
+		sf::Vector2i mousePosition = sf::Mouse::getPosition(guiWindow);
+		sf::Event event;
+		while (guiWindow.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+				guiWindow.close();
+			else if (event.type == sf::Event::MouseButtonPressed) {
+				if (event.mouseButton.button == sf::Mouse::Left)
+					GUI.leftClick(mousePosition);
+			}
+
+		}
+		guiWindow.clear();
+		GUI.Draw();
+		guiWindow.display();
+	}
+
+
+
+}
 
 void Display(vector<int>& data) {
 	cout << "\nGenerating Histogram..." << endl;
@@ -77,6 +106,8 @@ void Display(vector<int>& data) {
 	Histogram.LoadData(data);
 	Histogram.MakeBars();
 	
+
+
 	bool addtrigger = false;
 	int addCount = 0;
 
