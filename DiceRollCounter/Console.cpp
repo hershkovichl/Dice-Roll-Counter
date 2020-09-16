@@ -7,14 +7,21 @@
 #include <iomanip>
 
 using namespace std;
+struct Settings;
 
 
 vector<string> Console::readConfigurations() {
 	string filename = (string)"configurations" + (string)".txt";
+	
+	vector<string> defaultSettings;
+	defaultSettings.push_back("Debug_Mode: false");
+	defaultSettings.push_back("Print_Console_Histogram: true");
+	defaultSettings.push_back("Auto_Start_GUI: false");
+	
 	//Read phase:
 	vector<string> lines;
 
-	//Read phase:
+	
 	fstream file(filename);
 	string line;
 	if (file.good()) {
@@ -23,11 +30,17 @@ vector<string> Console::readConfigurations() {
 			lines.push_back(line);
 		}
 		infile.close();
+		if (lines.size() != defaultSettings.size()) { // if missing some settings, take the default ones
+			for (int i = lines.size(); i < defaultSettings.size(); i++)
+				lines.push_back(defaultSettings[i]);
+			ofstream outfile(filename, fstream::out);
+			for (int i = 0; i < lines.size(); i++) {
+				outfile << lines[i] << endl;
+			}
+		}
 	}
-	else { // if file doesn't exist, write default settings and Write it
-		lines.push_back("Debug_Mode: false");
-		// add more default configurations here:
-
+	else { // if file doesn't exist, take default settings and Write it
+		lines = defaultSettings;
 		
 		ofstream outfile(filename, fstream::out);
 		for (int i = 0; i < lines.size(); i++) {
@@ -210,7 +223,8 @@ void Console::ReadData(int diceMax, vector<int>& lines) {
 
 	printTable("Total Rolls", "Face", "Number of Rolls", diceMax, lines);
 	cout << endl << endl << "Histogram:" << endl;
-	printHist(diceMax, lines);
+	if(Settings::consoleHistogram)
+		printHist(diceMax, lines);
 }
 
 void Console::printTable(string title, string header1, string header2, int diceMax, vector<int> intVec) {

@@ -7,10 +7,9 @@ class GUI
 	sf::RenderWindow& window;
 	sf::RectangleShape background;
 
-	static sf::Font font;
 
 	Home homeMenu;
-	RollMenu rollMenu;
+	RollMenu* rollMenu;
 
 	Menu* CurrentMenu;
 	
@@ -18,6 +17,7 @@ class GUI
 
 
 public:
+	static sf::Font font;
 
 	void SelectMenu(std::string menu);
 	void Draw();

@@ -1,1 +1,3 @@
 Debug_Mode: true
+Print_Console_Histogram: false
+Auto_Start_GUI: true

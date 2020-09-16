@@ -11,24 +11,24 @@ using namespace std;
 void SetConfigurations(vector<string> settings);
 void Display(vector<int>& data); // This function handles the Graph Window
 int AddRandomD20();
-void findClosestSquare(int sides);
 void RunConsoleGUI();
 
-struct Settings {
-	static bool debugMode; // in debug mode: left click on histogram to add 1 random roll, right click to add 300. ONLY works on d20
-};
+
 bool Settings::debugMode = false;
+bool Settings::consoleHistogram = true;
+bool Settings::runGUIonStartup = false;
+
 
 int main() {
 	SetConfigurations(Console::readConfigurations());
-	
-	RunConsoleGUI();
 
 	// Initial instructions:
 	cout << "To input: \"Roll d[dice max] [result]\" \t or \"multi d[dice max]\"" << endl;
 	cout << "To get data: \"Data d[dice max]\"" << endl;
 	cout << "To exit: \"exit\"" << endl;
 
+	if(Settings::runGUIonStartup)
+		RunConsoleGUI();
 
 	vector<string> input;
 	while (true) {
@@ -48,7 +48,7 @@ int main() {
 			else if (input[0] == "multi")
 				Console::Multi(input);
 			else
-				cout << "Hi" << endl;
+				throw invalid_argument("Unknown command");
 
 		}
 		// Catching exceptions:
@@ -69,6 +69,16 @@ void SetConfigurations(vector<string> settings) {
 		Settings::debugMode = true;
 	else
 		Settings::debugMode = false;
+
+	if (settings[1] == "true")
+		Settings::consoleHistogram = true;
+	else
+		Settings::consoleHistogram = false;
+
+	if (settings[2] == "true")
+		Settings::runGUIonStartup = true;
+	else
+		Settings::runGUIonStartup = false;
 }
 
 void RunConsoleGUI() {
@@ -162,13 +172,4 @@ int AddRandomD20(){
 }
 
 
-void findClosestSquare(int sides) {
-	int large;
-	for (int small = sqrt(sides); small < sides; small++) 
-		if (sides % small == 0) {
-			large = sides / small;
-			break;
-		}
-			
 
-}

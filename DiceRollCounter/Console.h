@@ -3,6 +3,13 @@
 #include <string>
 
 
+struct Settings {
+	static bool debugMode; // in debug mode: left click on histogram to add 1 random roll, right click to add 300. ONLY works on d20
+	static bool consoleHistogram;
+	static bool runGUIonStartup;
+};
+
+
 namespace Console{
 	std::vector<std::string> readConfigurations();
 	void inputStage(std::vector<std::string>& input);
