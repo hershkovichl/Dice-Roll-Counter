@@ -2,17 +2,35 @@
 #include "GUI.h"
 #include "Console.h"
 #include "Menu.h"
+#include <iostream>
 
 using namespace std;
 
 sf::Font GUI::font;
 
-void GUI::SelectMenu(string menu) {
-    
 
+void GUI::sendRoll(int sides, int roll) {
+    cout << "Roll d" << sides << " " << roll << endl;
+    Console::updateFile(sides, roll);
 }
 
 
+void GUI::SelectMenu(string menu) {
+    if (menu == "Main Menu") {
+        CurrentMenu = &homeMenu;
+        delete rollMenu;
+        rollMenu = nullptr;
+    }
+    else {
+        menu.erase(0, 1);
+        if (rollMenu != nullptr)
+            delete rollMenu;
+        rollMenu = new RollMenu(stoi(menu));
+
+        CurrentMenu = rollMenu;
+
+    }
+}
 
 
 void GUI::Draw() {
@@ -21,7 +39,15 @@ void GUI::Draw() {
 }
 
 void GUI::leftClick(sf::Vector2i& position) {
-    CurrentMenu->leftClick(position);
+    string selection = CurrentMenu->leftClick(position);
+
+    if (selection != "null") {
+        if (CurrentMenu == &homeMenu || selection == "Main Menu")
+            SelectMenu(selection);
+        else if (rollMenu != nullptr && CurrentMenu == rollMenu)
+            sendRoll(rollMenu ->sides, stoi(selection));
+
+    }
 }
 
 

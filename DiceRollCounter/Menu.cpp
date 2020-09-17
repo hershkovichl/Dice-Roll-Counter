@@ -11,6 +11,7 @@ int findClosestSquare(int sides);
 
 void Menu::DrawHomeButton(sf::RenderWindow& window) {
 	window.draw(HomeButton);
+	window.draw(HomeButton.text);
 }
 
 void Menu::ArrangeMenuButtons(sf::RenderWindow& window, vector<Button>& buttons) {
@@ -57,16 +58,17 @@ int findClosestSquare(int sides) {// returns biggest dimension
 }
 
 string Menu::Button::Click() {
-	if(func_pointer != nullptr)
-		func_pointer(argument);
+	//if(func_pointer != nullptr)
+		//func_pointer(argument);
+
 
 	return label;
 }
 
-void Menu::RollButton::Click(int sides) {
-	cout << "Roll d" << sides << " sideValue" << endl;
-	Console::updateFile(sides, sideValue);
-}
+//string Menu::RollButton::Click(int sides) {
+	//cout << "Roll d" << sides << " sideValue" << endl;
+	//Console::updateFile(sides, sideValue);
+//}
 
 Menu::Button::Button(string label, void (*fptr)(std::string)) {
 	this->label = label;
@@ -94,18 +96,33 @@ Menu::Button::Button() {
 	argument = "home";
 }
 
+Menu::RollButton::RollButton(int side) : Menu::Button(to_string(side)){
+	sideValue = side;
+}
+Menu::RollButton::RollButton() : Menu::Button(){
+	sideValue = 1;
+}
+
 
 Menu::Menu() : HomeButton("Main Menu"){
 	HomeButton.func_pointer = nullptr;
+	HomeButton.setSize(sf::Vector2f(200.0f, 95.0f));
+	//HomeButton.setPosition(sf::Vector2f(buttonWidth * col, buttonWidth * row + 100.0f));
+	HomeButton.setFillColor(sf::Color::Red);
+	HomeButton.setOutlineColor(sf::Color::Black);
+	HomeButton.setOutlineThickness(2.0f);
+	HomeButton.text.setOrigin(sf::Vector2f(HomeButton.text.getGlobalBounds().width / 2, HomeButton.text.getGlobalBounds().height));
+	HomeButton.text.setPosition(sf::Vector2f(HomeButton.getPosition().x + HomeButton.getGlobalBounds().width / 2, HomeButton.getPosition().y + HomeButton.getGlobalBounds().height / 2));
 }
 
 /*===== Home Menu Functions =====*/
 
-void Home::leftClick(sf::Vector2i& mousePosition) {
+string Home::leftClick(sf::Vector2i& mousePosition) {
 	for (int i = 0; i < diceButtons.size(); i++)
 		if (diceButtons[i].getGlobalBounds().contains(sf::Vector2f(mousePosition)))
-			cout << diceButtons[i].label << endl;
-
+			return diceButtons[i].label;
+			//cout << diceButtons[i].label << endl;
+	return "null";
 }
 
 
@@ -117,6 +134,14 @@ void Home::Draw(sf::RenderWindow& window) {
 	}
 
 }
+void Home::setFunction(void (*ptr)(std::string)) {
+	for (int i = 0; i < diceButtons.size(); i++) {
+		diceButtons[i].func_pointer = ptr;
+		diceButtons[i].argument = diceButtons[i].label;
+	}
+
+}
+
 
 Home::Home() : Menu() {
 	diceButtons.push_back(Button("d4"));
@@ -136,15 +161,43 @@ void Home::ArrangeButtons(sf::RenderWindow& window) {
 
 
 /*===== Roll Menu Functions =====*/
-void RollMenu::leftClick(sf::Vector2i& mousePosition) {
-	cout << "ROLLL" << endl;
+string RollMenu::leftClick(sf::Vector2i& mousePosition) {
+	if (HomeButton.getGlobalBounds().contains(sf::Vector2f(mousePosition)))
+		return HomeButton.Click();
+	
+	for (int i = 0; i < rollButtons.size(); i++)
+		if (rollButtons[i].getGlobalBounds().contains(sf::Vector2f(mousePosition)))
+			return rollButtons[i].Click();
+	cout << sides << endl;
+
+	return "null";
 }
 
 void RollMenu::Draw(sf::RenderWindow& window) {
 	DrawHomeButton(window);
+	for (int i = 0; i < rollButtons.size(); i++) {
+		window.draw(rollButtons[i]);
+		window.draw(rollButtons[i].text);
+	}
 
 }
 
 RollMenu::RollMenu(int sides){
 	this->sides = sides;
+	for (int i = 0, row = 0, col = 0; i < sides; i++, col++) {
+		
+		if (i > 0 && i % 5 == 0) {
+			row++;
+			col = 0;
+		}
+		rollButtons.push_back(RollButton(i + 1));
+		RollButton& thisButton = rollButtons[i];
+		thisButton.setSize(sf::Vector2f(140, 140));
+		thisButton.setPosition(sf::Vector2f(250 + 160* col, 80 + 160 * row));
+		thisButton.setFillColor(sf::Color(200,200,200));
+		thisButton.text.setOrigin(sf::Vector2f(thisButton.text.getGlobalBounds().width / 2, thisButton.text.getGlobalBounds().height));
+		thisButton.text.setPosition(sf::Vector2f(thisButton.getPosition().x + thisButton.getGlobalBounds().width / 2, thisButton.getPosition().y + thisButton.getGlobalBounds().width / 2));
+	}
+
+		
 }

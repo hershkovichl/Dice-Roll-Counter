@@ -13,6 +13,8 @@ class GUI
 
 	Menu* CurrentMenu;
 	
+
+	void sendRoll(int sides, int roll);
 	
 
 
