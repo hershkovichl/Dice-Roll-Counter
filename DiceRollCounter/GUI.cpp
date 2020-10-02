@@ -3,6 +3,7 @@
 #include "Console.h"
 #include "Menu.h"
 #include <iostream>
+#include "TextureManager.h"
 
 using namespace std;
 
@@ -52,8 +53,11 @@ void GUI::leftClick(sf::Vector2i& position) {
 
 
 GUI::GUI(sf::RenderWindow& _window) : window(_window) {
-    background.setFillColor(sf::Color(50, 50, 56));
-    background.setSize(sf::Vector2f(window.getSize()));
+    background.setTexture(TextureManager::GetTexture("dice_falling"));
+    background.scale(sf::Vector2f(0.3f, 0.3f));
+    background.setPosition(sf::Vector2f(0, 200));
+    //background.setSize(sf::Vector2f(window.getSize()));
+    
 
     if (!font.loadFromFile("arial.ttf"))
         throw invalid_argument("Unable to load font file");

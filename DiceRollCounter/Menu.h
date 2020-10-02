@@ -53,6 +53,7 @@ public:
 
 class RollMenu : public Menu {
 	std::vector<RollButton> rollButtons;
+	sf::Sprite diceArt;
 
 public:
 	int sides;

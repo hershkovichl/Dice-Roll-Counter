@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include <string>
+#include "TextureManager.h"
 #include "Console.h"
 #include <iostream>
 #include "GUI.h"
@@ -175,6 +176,7 @@ string RollMenu::leftClick(sf::Vector2i& mousePosition) {
 
 void RollMenu::Draw(sf::RenderWindow& window) {
 	DrawHomeButton(window);
+	window.draw(diceArt);
 	for (int i = 0; i < rollButtons.size(); i++) {
 		window.draw(rollButtons[i]);
 		window.draw(rollButtons[i].text);
@@ -194,10 +196,15 @@ RollMenu::RollMenu(int sides){
 		RollButton& thisButton = rollButtons[i];
 		thisButton.setSize(sf::Vector2f(140, 140));
 		thisButton.setPosition(sf::Vector2f(250 + 160* col, 80 + 160 * row));
-		thisButton.setFillColor(sf::Color(200,200,200));
+		thisButton.setFillColor(sf::Color(200,200,200,250));
 		thisButton.text.setOrigin(sf::Vector2f(thisButton.text.getGlobalBounds().width / 2, thisButton.text.getGlobalBounds().height));
 		thisButton.text.setPosition(sf::Vector2f(thisButton.getPosition().x + thisButton.getGlobalBounds().width / 2, thisButton.getPosition().y + thisButton.getGlobalBounds().width / 2));
 	}
 
+	if (sides == 20) {
+		diceArt.setTexture(TextureManager::GetTexture("d20border"));
+		diceArt.setScale(sf::Vector2f(0.4f, 0.4f));
+		diceArt.setPosition(sf::Vector2f(0, 150));
+	}
 		
 }

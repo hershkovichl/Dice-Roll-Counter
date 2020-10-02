@@ -5,7 +5,7 @@
 class GUI
 {
 	sf::RenderWindow& window;
-	sf::RectangleShape background;
+	sf::Sprite background;
 
 
 	Home homeMenu;
