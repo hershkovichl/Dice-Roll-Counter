@@ -7,7 +7,6 @@ class Random
 	static std::mt19937 random;
 
 public:
-	static int x;
 	// one and only one of this function
 	static int Int(int min, int max);
 	static float Float(float min, float max);
