@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 
+/*
 class Bin
 {
 	int sides;
@@ -14,4 +15,15 @@ public:
 	void updateFile(int max, int rollValue);
 	void write();
 };
+*/
 
+struct BinSettings {
+	static int capacity;
+};
+
+namespace Bin{
+	void updateBin(int max, int rollValue);
+
+
+
+}

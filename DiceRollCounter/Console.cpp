@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include "Bin.h"
 
 using namespace std;
 struct Settings;
@@ -65,7 +66,6 @@ vector<string> Console::readConfigurations() {
 
 	return lines;
 }
-
 
 
 
@@ -180,7 +180,9 @@ void Console::updateFile(int max, int rollValue) {
 		outfile << lines[i] << endl;
 	}
 
+	Bin::updateBin(max, rollValue);
 }
+
 
 void Console::GetData(vector<string>& input, vector<int>& lines) {
 	if (input.size() > 3 || input.size() < 2)
