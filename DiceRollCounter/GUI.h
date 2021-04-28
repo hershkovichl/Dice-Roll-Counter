@@ -24,6 +24,7 @@ public:
 	void SelectMenu(std::string menu);
 	void Draw();
 	void leftClick(sf::Vector2i& position);
+	void hover(sf::Vector2i& position);
 
 	GUI(sf::RenderWindow& window);
 };

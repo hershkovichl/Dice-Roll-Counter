@@ -33,6 +33,7 @@ public:
 	Button HomeButton;
 
 	virtual std::string leftClick(sf::Vector2i& mousePosition) = 0;
+	virtual void hover(sf::Vector2i& mousePosition) = 0;
 	virtual void Draw(sf::RenderWindow& window) = 0;
 	void DrawHomeButton(sf::RenderWindow& window);
 	Menu();
@@ -47,6 +48,7 @@ public:
 
 	void setFunction(void (*ptr)(std::string));
 	std::string leftClick(sf::Vector2i& mousePosition);
+	void hover(sf::Vector2i& mouesPosition);
 	void Draw(sf::RenderWindow& window);
 	Home();
 };
@@ -58,6 +60,7 @@ class RollMenu : public Menu {
 public:
 	int sides;
 	std::string leftClick(sf::Vector2i& mousePosition);
+	void hover(sf::Vector2i& mousePosition);
 	void Draw(sf::RenderWindow& window);
 	RollMenu(int sides);
 };

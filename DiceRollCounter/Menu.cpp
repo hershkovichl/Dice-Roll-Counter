@@ -126,6 +126,13 @@ string Home::leftClick(sf::Vector2i& mousePosition) {
 	return "null";
 }
 
+void Home::hover(sf::Vector2i& mousePosition) {
+	for (int i = 0; i < diceButtons.size(); i++)
+		if (diceButtons[i].getGlobalBounds().contains(sf::Vector2f(mousePosition)))
+			diceButtons[i].setFillColor(sf::Color(0,0,100,255));
+		else
+			diceButtons[i].setFillColor(sf::Color::Blue);
+}
 
 void Home::Draw(sf::RenderWindow& window) {
 
@@ -172,6 +179,19 @@ string RollMenu::leftClick(sf::Vector2i& mousePosition) {
 	cout << sides << endl;
 
 	return "null";
+}
+
+void RollMenu::hover(sf::Vector2i& mousePosition) {
+	if (HomeButton.getGlobalBounds().contains(sf::Vector2f(mousePosition)))
+		HomeButton.setFillColor(sf::Color(100, 0, 0, 255));
+	else
+		HomeButton.setFillColor(sf::Color::Red);
+
+	for (int i = 0; i < rollButtons.size(); i++)
+		if (rollButtons[i].getGlobalBounds().contains(sf::Vector2f(mousePosition)))
+			rollButtons[i].setFillColor(sf::Color(100, 100, 100, 255));
+		else
+			rollButtons[i].setFillColor(sf::Color(200, 200, 200, 250));
 }
 
 void RollMenu::Draw(sf::RenderWindow& window) {

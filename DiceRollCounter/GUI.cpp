@@ -51,6 +51,11 @@ void GUI::leftClick(sf::Vector2i& position) {
     }
 }
 
+void GUI::hover(sf::Vector2i& position) {
+    CurrentMenu->hover(position);
+
+}
+
 
 GUI::GUI(sf::RenderWindow& _window) : window(_window) {
     background.setTexture(TextureManager::GetTexture("dice_falling"));

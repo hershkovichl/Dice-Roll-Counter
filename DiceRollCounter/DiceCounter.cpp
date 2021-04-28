@@ -98,12 +98,16 @@ void RunConsoleGUI() {
 	while (guiWindow.isOpen()) {
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(guiWindow);
 		sf::Event event;
+		GUI.hover(mousePosition);
 		while (guiWindow.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				guiWindow.close();
 			else if (event.type == sf::Event::MouseButtonPressed) {
 				if (event.mouseButton.button == sf::Mouse::Left)
 					GUI.leftClick(mousePosition);
+			}
+			else if (event.type == sf::Event::MouseMoved) {
+				// GUI.hover moved outside of mouse event bc it is more reliable there
 			}
 
 		}
