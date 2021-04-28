@@ -23,7 +23,7 @@ struct BinSettings {
 
 namespace Bin{
 	void updateBin(int max, int rollValue);
-
+	void undo(int max, int amount, std::vector<int>& sides);
 
 
 }

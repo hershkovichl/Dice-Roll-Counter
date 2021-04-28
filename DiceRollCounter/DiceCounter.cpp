@@ -27,6 +27,7 @@ int main() {
 	cout << "To input: \"Roll d[dice max] [result]\" \t or \"multi d[dice max]\"" << endl;
 	cout << "To get data: \"Data d[dice max]\"" << endl;
 	cout << "For visual interface: \"GUI\"" << endl;
+	cout << "To undo: \"Undo d[dice max]\" \t or \"Undo d[dice max] [amount]\"" << endl;
 	cout << "To exit: \"exit\"" << endl;
 
 	if(Settings::runGUIonStartup)
@@ -49,6 +50,8 @@ int main() {
 				break;
 			else if (input[0] == "multi")
 				Console::Multi(input);
+			else if (input[0] == "undo")
+				Console::Undo(input);
 			else if (input[0] == "gui")
 				RunConsoleGUI();
 			else
