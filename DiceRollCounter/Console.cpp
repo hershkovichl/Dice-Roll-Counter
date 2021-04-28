@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include "Bin.h"
 
 using namespace std;
 struct Settings;
@@ -65,7 +66,6 @@ vector<string> Console::readConfigurations() {
 
 	return lines;
 }
-
 
 
 
@@ -141,6 +141,27 @@ void Console::Multi(std::vector<std::string>& input) {
 		throw invalid_argument("Invalid Die.\nValid Dice include d100, d20, d8, d6, d4\nExample: multi d20");
 }
 
+void Console::Undo(std::vector<std::string>& input) {
+	if (input.size() != 2 && input.size() != 3)
+		throw invalid_argument("Bad input. Format example:\nUndo d20 OR Undo d20 15");
+
+	int sides = getSides(input);
+	int undoAmount = 1; // how many rolls to undo
+	if (input.size() == 3)
+		undoAmount = stoi(input[2]);
+	if (undoAmount < 1)
+		throw invalid_argument("Bad input. Can only undo 1 or more sides");
+
+	vector<int> undoSides;
+	Bin::undo(sides, undoAmount, undoSides);
+
+	cout << endl;
+	for (int i = 0; i < undoSides.size(); i++) {
+		updateFile(sides, undoSides[i], true);
+	}
+	cout << endl;
+}
+
 int Console::verifyRoll(int max, string& input) {
 		int rollvalue = stoi(input);
 
@@ -150,7 +171,7 @@ int Console::verifyRoll(int max, string& input) {
 		return rollvalue;
 }
 
-void Console::updateFile(int max, int rollValue) {
+void Console::updateFile(int max, int rollValue, bool remove) {
 	string filename = (string)"d" + to_string(max) + (string)".dat";
 
 	vector<int> lines;
@@ -172,7 +193,10 @@ void Console::updateFile(int max, int rollValue) {
 			lines.push_back(0);
 
 	//Edit phase:
-	lines[rollValue - 1]++;
+	if (remove)
+		lines[rollValue - 1]--;
+	else
+		lines[rollValue - 1]++;
 	cout << "Total rolls of " << rollValue << ": " << lines[rollValue - 1] << endl;
 	//Write phase:
 	ofstream outfile(filename, fstream::out);
@@ -180,7 +204,9 @@ void Console::updateFile(int max, int rollValue) {
 		outfile << lines[i] << endl;
 	}
 
+	Bin::updateBin(max, rollValue);
 }
+
 
 void Console::GetData(vector<string>& input, vector<int>& lines) {
 	if (input.size() > 3 || input.size() < 2)
@@ -256,4 +282,15 @@ void Console::printHist(int diceMax, vector<int> intVec) {
 			cout << "*";
 		cout << endl;
 	}
+}
+
+
+int Console::getSides(std::vector<std::string>& input) {
+	if (input[1] == "d20" || "d100" || "d12" || "d8" || "d6" || "d4") {
+		input[1].erase(0, 1);
+		int sides = stoi(input[1]);
+		return sides;
+	}
+	else
+		throw invalid_argument("Invalid Die.\nValid Dice include d100, d20, d8, d6, d4\nExample: multi d20");
 }
